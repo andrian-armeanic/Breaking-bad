@@ -17,21 +17,22 @@ const initialState: IInitialState = {
     message: "",
 };
 
-export const search: any = createAsyncThunk("search/user", async (url, thunkAPI) => {
-        try {
-            const response = await axios.get(`https://www.breakingbadapi.com/api/characters?name=${ url }`);
-            return response.data;
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue(error.message);
-        }
-    },
-);
+async function getAllActors (url: string, thunkAPI: { rejectWithValue: (arg0: any) => any; }) {
+    try {
+        const response = await axios.get(`https://www.breakingbadapi.com/api/characters?name=${ url }`);
+        return response.data;
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue(error.message);
+    }
+}
+
+export const search: any = createAsyncThunk("search/user", getAllActors);
 
 export const searchSlice = createSlice({
     name: "search",
     initialState,
     reducers: {},
-    
+
     extraReducers: (builder) => {
         builder
             .addCase(search.pending, (state) => {
