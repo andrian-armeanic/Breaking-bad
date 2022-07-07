@@ -7,20 +7,27 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { searchService } from "../components/Search";
-import { AppDispatch } from "../store";
+import { search } from "../reducer/searchSlice";
+import { store } from "../store";
+import "./index.scss";
 
-declare type IName = { name: number; }
+export interface IName {
+    name: number;
+}
 
-declare type IPortrayed = { portrayed: number; }
+export interface IPortrayed {
+    portrayed: number;
+}
 
-export default function App () {
+const App = () => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [dropDownValue, setDropDownValue] = useState("1");
     const [userValue, setUserValue] = useState<any[] | null>(null);
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch<typeof store.dispatch>();
 
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.search);
+    const { user, isLoading, isError, isSuccess, message } = useSelector(
+        (state: any) => state.search,
+    );
 
     const characterAscending = (a: IName, b: IName) => {
         if (a.name < b.name) {
@@ -67,7 +74,7 @@ export default function App () {
     }, [user]);
 
     useEffect(() => {
-        dispatch(searchService(searchValue));
+        dispatch(search(searchValue));
     }, [searchValue, dispatch]);
 
     useEffect(() => {
@@ -95,6 +102,7 @@ export default function App () {
                             setSearchValue(e.target.value);
                         } }
                     />
+
                     <Box className="drop-down">
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
@@ -151,3 +159,5 @@ export default function App () {
         </>
     );
 };
+
+export default App;

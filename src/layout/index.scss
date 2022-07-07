@@ -21,7 +21,13 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-button, input[type="submit"], input[type="reset"] {
+body::-webkit-scrollbar {
+  display: none;
+}
+
+button,
+input[type="submit"],
+input[type="reset"] {
   background: none;
   color: inherit;
   border: none;
@@ -59,7 +65,9 @@ li {
   line-height: 2.2;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: 600;
   margin-bottom: 25px;
 }
@@ -142,7 +150,8 @@ h1, h2, h3 {
   background: none;
 }
 
-.form, .content {
+.form,
+.content {
   width: 70%;
   margin: 0 auto;
 }
@@ -210,18 +219,15 @@ img {
 
 .user {
   box-shadow: 0 2px 3px rgb(118 118 118 / 35%);
-
   article {
     display: flex;
     flex-direction: column;
     padding: 15px;
   }
-
   p {
     text-align: left;
     font-size: 15px;
     font-weight: 600;
-
     span {
       display: block;
       font-size: 12px;
