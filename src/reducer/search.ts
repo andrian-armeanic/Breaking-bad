@@ -1,16 +1,8 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export interface IInitialState {
-    user: null | any[];
-    isError: boolean;
-    isSuccess: boolean;
-    isLoading: boolean;
-    message: string;
-}
-
-const initialState: IInitialState = {
-    user: null,
+const initialState = {
+    user: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -34,22 +26,19 @@ export const searchSlice = createSlice({
     reducers: {},
 
     extraReducers: (builder) => {
-        builder
-            .addCase(search.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(search.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.isSuccess = true;
-                state.user = action.payload;
-            })
-            .addCase(search.rejected, (state, action) => {
-                state.isLoading = false;
-                state.isSuccess = false;
-                state.isError = true;
-                state.message = action.payload;
-                state.user = null;
-            });
+        builder.addCase(search.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(search.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.user = action.payload;
+        }).addCase(search.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = false;
+            state.isError = true;
+            state.message = action.payload;
+            state.user = [];
+        });
     },
 });
 
