@@ -1,20 +1,43 @@
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+    Box,
+    ButtonBase,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+} from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { search } from "../reducer/search";
 import "./index.scss";
 
-export type IName = { name: number; }
+export type IName = { name: number };
 
-export type IPortrayed = { portrayed: number; }
+export type IPortrayed = { portrayed: number };
 
 export default function App () {
     const [searchValue, setSearchValue] = useState<string>("");
     const [dropDownValue, setDropDownValue] = useState("1");
     const [userValue, setUserValue] = useState<object[]>([]);
     const dispatch = useDispatch<Dispatch>();
-    const { user, isError, isSuccess, message } = useSelector((state: any) => state.search);
+    const { user, isError, isSuccess, message } = useSelector(
+        (state: any) => state.search,
+    );
+
+    const handleSortType = () => {
+        if (dropDownValue === "1") {
+            setUserValue([...user].sort(characterAscending));
+        } else if (dropDownValue === "2") {
+            setUserValue([...user].sort(characterDescending));
+        } else if (dropDownValue === "3") {
+            setUserValue([...user].sort(actorAscending));
+        } else if (dropDownValue === "4") {
+            setUserValue([...user].sort(actorDescending));
+        }
+    };
 
     const characterAscending = (a: IName, b: IName) => {
         return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
@@ -32,11 +55,11 @@ export default function App () {
         return a.portrayed < b.portrayed ? 1 : a.portrayed > b.portrayed ? -1 : 0;
     };
 
-    const searchOnTextFieldChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const searchOnTextFieldChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,) => {
         setSearchValue(e.target.value);
     };
 
-    const sortOnSelectChange = (e: { target: { value: string; } }) => {
+    const sortOnSelectChange = (e: { target: { value: string } }) => {
         setDropDownValue(e.target.value as string);
     };
 
@@ -45,20 +68,18 @@ export default function App () {
     }, [user]);
 
     useEffect(() => {
-        dispatch(search(searchValue));
+        const debounce = setTimeout(() => {
+            dispatch(search(searchValue));
+        }, 500);
+
+        return () => {
+            clearTimeout(debounce);
+        };
     }, [searchValue, dispatch]);
 
     useEffect(() => {
-        if (dropDownValue === "1") {
-            setUserValue([...user].sort(characterAscending));
-        } else if (dropDownValue === "2") {
-            setUserValue([...user].sort(characterDescending));
-        } else if (dropDownValue === "3") {
-            setUserValue([...user].sort(actorAscending));
-        } else if (dropDownValue === "4") {
-            setUserValue([...user].sort(actorDescending));
-        }
-    }, [dropDownValue]);
+        handleSortType();
+    }, [dropDownValue, userValue.length]);
 
     return (
         <>
@@ -73,7 +94,9 @@ export default function App () {
                     />
                     <Box className="drop-down">
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Native Select</InputLabel>
+                            <InputLabel id="demo-simple-select-label">
+                                Native Select
+                            </InputLabel>
                             <Select
                                 variant="outlined"
                                 labelId="demo-simple-select-label"
@@ -92,21 +115,27 @@ export default function App () {
                 </Box>
                 { isError ? message : "" }
                 { userValue?.length === 0 ? "no actors" : "" }
-                <Grid container spacing={ 4 }>
-                    { isSuccess && userValue.map((user: any) => (
-                        <Grid item xs={ 3 } key={ user.char_id }>
-                            <Box className="user">
-                                <Box className="img">
-                                    <img src={ user.img } alt={ user.name }/>
-                                </Box>
-                                <article>
-                                    <p>{ user.name }<span>{ user.nickname }</span></p>
-                                </article>
-                            </Box>
-                        </Grid>
-                    )) }
-                </Grid>
+                <div className="actors-list">
+                    { isSuccess &&
+                      userValue.map((user: any) => (
+                          <Grid item xs={ 3 } key={ user.char_id }>
+                              <ButtonBase>
+                                  <Box className="user">
+                                      <Box className="img">
+                                          <img src={ user.img } alt={ user.name }/>
+                                      </Box>
+                                      <article>
+                                          <p>
+                                              { user.name }
+                                              <span>{ user.nickname }</span>
+                                          </p>
+                                      </article>
+                                  </Box>
+                              </ButtonBase>
+                          </Grid>
+                      )) }
+                </div>
             </Box>
         </>
     );
-};
+}

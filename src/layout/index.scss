@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 * {
   position: relative;
@@ -9,7 +9,7 @@
   letter-spacing: 0.6px;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -25,7 +25,9 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-button, input[type="submit"], input[type="reset"] {
+button,
+input[type='submit'],
+input[type='reset'] {
   background: none;
   color: inherit;
   border: none;
@@ -63,7 +65,9 @@ li {
   line-height: 2.2;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: 600;
   margin-bottom: 25px;
 }
@@ -146,7 +150,8 @@ h1, h2, h3 {
   background: none;
 }
 
-.form, .content {
+.form,
+.content {
   width: 70%;
   margin: 0 auto;
 }
@@ -155,7 +160,9 @@ h1, h2, h3 {
   margin-bottom: 10px;
 }
 
-.form-group input, .form-group textarea, .form-group select {
+.form-group input,
+.form-group textarea,
+.form-group select {
   width: 100%;
   padding: 10px;
   border: 1px solid #e6e6e6;
@@ -209,7 +216,15 @@ img {
   height: 325px;
 }
 
+.actors-list {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
 .user {
+  max-width: 200px;
   box-shadow: 0 2px 3px rgb(118 118 118 / 35%);
 
   article {
